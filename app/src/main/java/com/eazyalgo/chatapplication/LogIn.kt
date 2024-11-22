@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.eazyalgo.chatapplication.SignUp
 import com.eazyalgo.chatapplication.ui.theme.ChatApplicationTheme
+import com.google.firebase.Firebase
 
 class LogIn : ComponentActivity() {
 
@@ -21,6 +23,7 @@ class LogIn : ComponentActivity() {
     private Lateinit var edtPassword: EditText
     private Lateinit var btnLogIn: Button
     private Lateinit var btnSignUp: Button
+    private Lateinit var mAuth : FirebaseAuth
 
 
 
@@ -29,6 +32,10 @@ class LogIn : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
+
+        supportActionBar?.hide()
+
+        mAuth = FirebaseAuth.getInstance()
 
         edtEmail = findViewById(R.id.edt_email)
         edtPassword = findViewById(R.id.edt_password)
@@ -41,7 +48,28 @@ class LogIn : ComponentActivity() {
 
         }
 
+        btnLogIn.setOnClickListener{
+            val email = edtEmail.text.toString()
+            val password = edtPassword.text.toString()
 
+            login(email,password);
+
+        }
+
+        private fun login(email: String, password: string){
+
+            mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        val intent = Intent(this@LogIn, MainActivity::class.java)
+                        startActivity(intent)
+
+                    } else {
+                   Toast.makeText(this@LogIn, "User does not exist", Toast.LENGTH_SHORT).shoe()
+                    }
+                }
+
+        }
 
 
 
