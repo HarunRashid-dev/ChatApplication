@@ -21,6 +21,7 @@ class SignUp : ComponentActivity() {
     private Lateinit var edtPassword: EditText
     private Lateinit var btnSignUp: Button
     private Lateinit var mAuth : FirebaseAuth
+    private Lateinit var mDbRef : DatabaseReference
 
 
 
@@ -41,24 +42,32 @@ class SignUp : ComponentActivity() {
 
 
         btnSignUp.setOnClickListener {
+            val name = edtName.text.toString()
             val email = edtEmail.text.toString()
             val password = edtPassword.text.toString()
 
-            signUp(email, password)
+            signUp(name, email, password)
         }
     }
-    private fun signup(email: String, password: String){
+    private fun signup(name: String email: String, password: String){
 
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-
+                    addUserToDatabase(name,email,mAuth.currentUser?.uid!!)
                     val intent = Intent(this@SignUp, MainActivity::class.java)
+                    finish()
                     startActivity(intent)
 
                 } else {
                     Toast.makeText(this@SignUp, "Some error occurred", Tost.LENGTH_SHORT).show()
+                }
+                private fun addUserToDatabase(name: String, email: String, uid: String){
+
+                    mDbRef = FirebaseDatabase.getInstance().getReference()
+                    mDbRef.child("user").child(uid).setValue(User(name,email,uid))
+
                 }
             }
 
