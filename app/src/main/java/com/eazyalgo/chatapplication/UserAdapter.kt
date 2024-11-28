@@ -13,6 +13,15 @@ class UserAdapter (val context: Context, val userList: ArrayList<User>):
         val currentUser = userList[position]
         holder.textName.text = currentUser.name
 
+        holder.itemView.setOnClickListener {
+            val Intent = Intent(context,ChatActivity::class.java)
+
+            intent.putExtra("name",currentUser.name)
+            intent.putExtra("uid",currentUser.uid)
+
+            context.startActivity(intent)
+        }
+
     }
 
     override fun getItemCount(): Int{
