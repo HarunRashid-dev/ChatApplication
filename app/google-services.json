@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "971701640706",
+    "project_id": "chatapplication-6cc6c",
+    "storage_bucket": "chatapplication-6cc6c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971701640706:android:9917a1239a302b5b52911b",
+        "android_client_info": {
+          "package_name": "com.eazyalgo.chatapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgPIyddX5_qcYAqFTnCvm57YuYUoj6ejE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
