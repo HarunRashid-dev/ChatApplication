@@ -18,25 +18,24 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="5dp"
-        android:weightSun="100">
+        android:weightSum="100"> <!-- Corrected 'weightSun' to 'weightSum' -->
 
-    <EditText
-        android:id="@+id/messageBox"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:hint="Type a message"
-        android:layout_marginLeft="10dp"
-        android:paddingLeft="10dp"
-        android:background=@drawable/message_box_background"
+        <EditText
+            android:id="@+id/messageBox"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:hint="Type a message"
+            android:layout_marginLeft="10dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/message_box_background" <!-- Fixed the background attribute -->
         android:layout_weight="85"/>
 
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android: src="@drawable/send"
+            android:src="@drawable/send"
             android:layout_weight="20"/>
 
-
-
+    </LinearLayout>
 
 </RelativeLayout>
