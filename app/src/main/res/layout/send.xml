@@ -6,8 +6,8 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:background="@drawable/btn_backgrounf"
-        android:layout_alignParentRigh="true"
+        android:background="@drawable/btn_backgroundf"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:layout_height="wrap_content">

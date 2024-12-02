@@ -1,66 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
     tools:context=".SignUp">
 
-    <Imageview
+    <!-- Corrected ImageView -->
+    <ImageView
         android:id="@+id/app_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:res="drawable/caratlane"
+        android:src="@drawable/caratlane"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp" />
 
+    <!-- Corrected EditText for Name -->
     <EditText
         android:id="@+id/edt_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_bellow="@+id/app_logo"
+        android:layout_below="@id/app_logo"
         android:layout_marginTop="10dp"
         android:hint="Name"
-        android:paddingleft="13dp"
+        android:paddingLeft="13dp"
         android:background="@drawable/edt_background"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp" />
 
+    <!-- Corrected EditText for Email -->
     <EditText
         android:id="@+id/edt_email"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_bellow="@+id/edt_name"
+        android:layout_below="@id/edt_name"
         android:layout_marginTop="10dp"
         android:hint="Email"
-        android:paddingleft="13dp"
+        android:paddingLeft="13dp"
         android:background="@drawable/edt_background"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp" />
 
+    <!-- Corrected EditText for Password -->
     <EditText
         android:id="@+id/edt_password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_bellow="@+id/app_email"
+        android:layout_below="@id/edt_email"
         android:layout_marginTop="10dp"
         android:hint="Password"
-        android:paddingleft="13dp"
+        android:paddingLeft="13dp"
         android:background="@drawable/edt_background"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginRight="20dp" />
 
-
+    <!-- Corrected Button -->
     <Button
         android:id="@+id/btnSignUp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edt_password"
+        android:layout_below="@id/edt_password"
         android:text="Sign Up"
         android:background="@drawable/btn_backgroundf"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:layout_centerHorizontal="true"
-        android:layout_margeTop="10dp"/>
-
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>
