@@ -37,5 +37,10 @@ dependencies {
     implementation("androidx.compose.material:material:1.5.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.5.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+    implementation(libs.androidx.recyclerview)
+    implementation("androidx.appcompat:appcompat:1.6.1")  // Ensure this is included
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4") // If using ConstraintLayout
+        // Other dependencies...
+
     // Add other dependencies
 }
