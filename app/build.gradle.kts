@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose") // Apply the Compose plugin
+    id("org.jetbrains.kotlin.android") version "2.0.0"
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -14,33 +14,37 @@ android {
         versionName = "1.0"
     }
 
-    namespace = "com.example.yourapp"  // Set the namespace (usually the same as applicationId)
-
+    namespace = "com.example.yourapp"
 
     buildFeatures {
         compose = true
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.0" // Make sure the version matches your Compose version
-        kotlinCompilerVersion = "2.0.0" // This should match the version of Kotlin you're using
+        kotlinCompilerExtensionVersion = "1.5.0"
     }
-}
 
-composeCompiler {
-    reportsDestination = layout.buildDirectory.dir("compose_compiler")
-    stabilityConfigurationFile = rootProject.layout.projectDirectory.file("stability_config.conf") // Optional: configure stability if needed
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
     implementation("androidx.compose.ui:ui:1.5.0")
     implementation("androidx.compose.material:material:1.5.0")
     implementation("androidx.compose.ui:ui-tooling-preview:1.5.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
-    implementation(libs.androidx.recyclerview)
-    implementation("androidx.appcompat:appcompat:1.6.1")  // Ensure this is included
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4") // If using ConstraintLayout
-        // Other dependencies...
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.recyclerview:recyclerview:1.3.1")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.compose.compiler:compiler:1.5.0")
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
 
-    // Add other dependencies
 }

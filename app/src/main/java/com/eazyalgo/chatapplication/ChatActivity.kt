@@ -3,13 +3,13 @@ package com.eazyalgo.chatapplication
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 
-class ChatActivity : ComponentActivity() {
+class ChatActivity : AppCompatActivity() {
 
     private lateinit var chatRecyclerView: RecyclerView
     private lateinit var messageBox: EditText
@@ -23,7 +23,7 @@ class ChatActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
+        setContentView(R.layout.activity_chat)  // Ensure this uses the layout resource ID
 
         // Retrieve intent extras
         val name = intent.getStringExtra("name")
@@ -37,7 +37,6 @@ class ChatActivity : ComponentActivity() {
         receiverRoom = senderUid + receiverUid
 
         // Set the action bar title
-        val supportActionBar = null
         supportActionBar?.title = name
 
         // Initialize views
