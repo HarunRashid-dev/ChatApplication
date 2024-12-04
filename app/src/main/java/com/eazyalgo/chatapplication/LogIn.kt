@@ -1,107 +1,118 @@
 package com.eazyalgo.chatapplication
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.eazyalgo.chatapplication.SignUp
+import androidx.compose.ui.unit.dp
 import com.eazyalgo.chatapplication.ui.theme.ChatApplicationTheme
-import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 
 class LogIn : ComponentActivity() {
 
-    private Lateinit var edtEmail: EditText
-    private Lateinit var edtPassword: EditText
-    private Lateinit var btnLogIn: Button
-    private Lateinit var btnSignUp: Button
-    private Lateinit var mAuth : FirebaseAuth
-
-
-
-
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_log_in)
-
-        supportActionBar?.hide()
-
-        mAuth = FirebaseAuth.getInstance()
-
-        edtEmail = findViewById(R.id.edt_email)
-        edtPassword = findViewById(R.id.edt_password)
-        btnLogIn = findViewById(R.id.btnLogin)
-        btnSignUp = findViewById(R.id.btnSignUp)
-
-        btnSignup.setOnClickListener {
-            val intent  = Intent( this, SignUp::class.java)
-            startActivity(intent)
-
-        }
-
-        btnLogIn.setOnClickListener{
-            val email = edtEmail.text.toString()
-            val password = edtPassword.text.toString()
-
-            login(email,password);
-
-        }
-
-        private fun login(email: String, password: string){
-
-            mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val intent = Intent(this@LogIn, MainActivity::class.java)
-                        finish()
-                        startActivity(intent)
-
-                    } else {
-                   Toast.makeText(this@LogIn, "User does not exist", Toast.LENGTH_SHORT).shoe()
-                    }
-                }
-
-        }
-
-
-
-
-
-        enableEdgeToEdge()
         setContent {
             ChatApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting2(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    LogInScreen(innerPadding)
                 }
             }
         }
     }
-}
 
-@Composable
-fun Greeting2(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+    @Composable
+    fun LogInScreen(modifier: Modifier = Modifier) {
+        var email by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
+        val mAuth = FirebaseAuth.getInstance()
+
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Log In", style = MaterialTheme.typography.headlineLarge)
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Email TextField
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Password TextField
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Password") },
+                modifier = Modifier.fillMaxWidth(),
+                visualTransformation = PasswordVisualTransformation()
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Log In Button
+            Button(
+                onClick = {
+                    if (email.isNotEmpty() && password.isNotEmpty()) {
+                        login(email, password)
+                    } else {
+                        Toast.makeText(this@LogIn, "Please enter both email and password", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Log In")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // SignUp Button
+            TextButton(onClick = {
+                val intent = Intent(this@LogIn, SignUp::class.java)
+                startActivity(intent)
+            }) {
+                Text("Don't have an account? Sign Up")
+            }
+        }
+    }
+
+    // Function to handle login
+    private fun login(email: String, password: String) {
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val intent = Intent(this@LogIn, MainActivity::class.java)
+                    finish()
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this@LogIn, "User does not exist", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview2() {
+fun LogInScreenPreview() {
     ChatApplicationTheme {
-        Greeting2("Android")
+        LogInScreen()
     }
 }

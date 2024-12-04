@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp">
 
     <!-- RecyclerView to display messages -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_above="@id/linearLayout"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_below="@id/linearLayout"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
+        android:scrollbars="vertical"
+        android:layout_alignParentBottom="true" />
 
     <!-- Message input field and send button -->
     <LinearLayout
@@ -19,28 +23,29 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:weightSum="100">
+        android:padding="8dp">
 
         <!-- EditText for typing message -->
         <EditText
             android:id="@+id/messageBox"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="85"
+            android:layout_weight="1"
             android:hint="Type a message"
-            android:layout_marginStart="10dp"
-            android:paddingStart="10dp"
-            android:background="@drawable/message_box_background" />
+            android:background="@drawable/message_box_background"
+            android:padding="10dp"
+            android:imeOptions="actionSend"
+            android:inputType="text" />
 
         <!-- ImageView for send button -->
         <ImageView
             android:id="@+id/sendButton"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_weight="15"
-            android:src="@android:drawable/ic_menu_send" />
+            android:layout_marginStart="8dp"
+            android:src="@android:drawable/ic_menu_send"
+            android:contentDescription="Send Message"
+            android:padding="10dp" />
     </LinearLayout>
 
 </RelativeLayout>

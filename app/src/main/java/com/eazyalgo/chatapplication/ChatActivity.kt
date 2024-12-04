@@ -1,6 +1,7 @@
 package com.eazyalgo.chatapplication
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -23,64 +24,72 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)  // Ensure this uses the layout resource ID
 
-        // Retrieve intent extras
-        val name = intent.getStringExtra("name")
-        val receiverUid = intent.getStringExtra("uid")
+        try {
+            // Set content view
+            setContentView(R.layout.activity_chat)
 
-        // Initialize FirebaseAuth and FirebaseDatabase
-        val senderUid = FirebaseAuth.getInstance().currentUser?.uid
-        mDbRef = FirebaseDatabase.getInstance().reference
+            // Retrieve intent extras
+            val name = intent.getStringExtra("name")
+            val receiverUid = intent.getStringExtra("uid")
 
-        senderRoom = receiverUid + senderUid
-        receiverRoom = senderUid + receiverUid
+            // Initialize FirebaseAuth and FirebaseDatabase
+            val senderUid = FirebaseAuth.getInstance().currentUser?.uid
+            mDbRef = FirebaseDatabase.getInstance().reference
 
-        // Set the action bar title
-        supportActionBar?.title = name
+            senderRoom = receiverUid + senderUid
+            receiverRoom = senderUid + receiverUid
 
-        // Initialize views
-        chatRecyclerView = findViewById(R.id.chatRecyclerView)
-        messageBox = findViewById(R.id.messageBox)
-        sendButton = findViewById(R.id.sendButton)
-        messageList = ArrayList()
-        messageAdapter = MessageAdapter(this, messageList)
+            // Set the action bar title
+            supportActionBar?.title = name
 
-        // Set up RecyclerView
-        chatRecyclerView.layoutManager = LinearLayoutManager(this)
-        chatRecyclerView.adapter = messageAdapter
+            // Initialize views
+            chatRecyclerView = findViewById(R.id.chatRecyclerView)
+            messageBox = findViewById(R.id.messageBox)
+            sendButton = findViewById(R.id.sendButton)
 
-        // Listen for messages in the database
-        mDbRef.child("chats").child(senderRoom!!).child("messages")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    messageList.clear()
-                    for (postSnapshot in snapshot.children) {
-                        val message = postSnapshot.getValue(Message::class.java)
-                        if (message != null) {
-                            messageList.add(message)
+            // Initialize message list and adapter
+            messageList = ArrayList()
+            messageAdapter = MessageAdapter(this, messageList)
+
+            // Set up RecyclerView
+            chatRecyclerView.layoutManager = LinearLayoutManager(this)
+            chatRecyclerView.adapter = messageAdapter
+
+            // Listen for messages in the database
+            mDbRef.child("chats").child(senderRoom!!).child("messages")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        messageList.clear()
+                        for (postSnapshot in snapshot.children) {
+                            val message = postSnapshot.getValue(Message::class.java)
+                            if (message != null) {
+                                messageList.add(message)
+                            }
                         }
+                        messageAdapter.notifyDataSetChanged()
                     }
-                    messageAdapter.notifyDataSetChanged()
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    // Handle errors
-                }
-            })
-
-        // Send button click listener
-        sendButton.setOnClickListener {
-            val messageText = messageBox.text.toString()
-            if (messageText.isNotEmpty()) {
-                val messageObject = Message(messageText, senderUid)
-                mDbRef.child("chats").child(senderRoom!!).child("messages").push()
-                    .setValue(messageObject).addOnSuccessListener {
-                        mDbRef.child("chats").child(receiverRoom!!).child("messages").push()
-                            .setValue(messageObject)
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e("ChatActivity", "Database error: ${error.message}")
                     }
-                messageBox.setText("")
+                })
+
+            // Send button click listener
+            sendButton.setOnClickListener {
+                val messageText = messageBox.text.toString().trim()
+                if (messageText.isNotEmpty()) {
+                    val messageObject = Message(messageText, senderUid)
+                    mDbRef.child("chats").child(senderRoom!!).child("messages").push()
+                        .setValue(messageObject).addOnSuccessListener {
+                            mDbRef.child("chats").child(receiverRoom!!).child("messages").push()
+                                .setValue(messageObject)
+                        }
+                    messageBox.setText("")
+                }
             }
+        } catch (e: Exception) {
+            Log.e("ChatActivity", "Error in onCreate", e)
         }
     }
 }
